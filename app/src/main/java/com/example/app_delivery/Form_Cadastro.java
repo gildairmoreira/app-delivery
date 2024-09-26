@@ -14,7 +14,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -49,6 +53,25 @@ public class Form_Cadastro extends AppCompatActivity {
                 Snackbar snackbar = Snackbar.make(view, "Usuário Cadastrado com Sucesso!", Snackbar.LENGTH_INDEFINITE)
                         .setAction("OK", v -> finish());
                 snackbar.show();
+            }else {
+                String erro;
+                try {
+                    throw task.getException();
+                } catch (FirebaseAuthWeakPasswordException e) {
+                    erro = "Digite uma Senha Mais Forte!";
+                } catch (FirebaseAuthInvalidCredentialsException e) {
+                    erro = "Digite um E-mail Válido!";
+                }catch (FirebaseAuthUserCollisionException e) {
+                    erro = "Esta Conta Já Existe!";
+                }catch (FirebaseNetworkException e) {
+                    erro = "Sem Conexão com a Internet!";
+                }
+                catch (Exception e) {
+                    erro = "Erro ao Cadastrar Usuário: " + e.getMessage();
+                }
+                txt_mensagemError.setText(erro);
+//                Snackbar snackbar = Snackbar.make(view, erro, Snackbar.LENGTH_SHORT);
+//                snackbar.show();
             }
         });
     }
