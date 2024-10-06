@@ -15,7 +15,10 @@
         android:theme="@style/Theme.Appdelivery"
         tools:targetApi="31">
         <activity
-            android:name=".Perfil_Usiario"
+            android:name=".Editar_Perfil"
+            android:exported="false" />
+        <activity
+            android:name=".Perfil_Usuario"
             android:exported="false" />
         <activity
             android:name=".Lista_Produtos"

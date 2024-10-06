@@ -6,7 +6,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -39,7 +38,7 @@ public class Lista_Produtos extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.perfil) {
-            Intent intent = new Intent(Lista_Produtos.this, Perfil_Usiario.class);
+            Intent intent = new Intent(Lista_Produtos.this, Perfil_Usuario.class);
             startActivity(intent);
 
             return true;

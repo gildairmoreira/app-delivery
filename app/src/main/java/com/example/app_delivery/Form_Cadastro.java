@@ -140,7 +140,6 @@ public class Form_Cadastro extends AppCompatActivity {
                         })
                         .addOnFailureListener(e -> Log.i("url_img", e.getMessage()))
                 ).addOnFailureListener(e -> Log.i("url_img", e.getMessage()));
-
     }
 
     public void IniciarComponentes() {
