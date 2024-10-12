@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,8 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.app_delivery.Adapter.AdapterProduto;
+import com.example.app_delivery.RecyclerViewItemClickListener.RecyclerViewItemClickListener;
 import com.example.app_delivery.model.Produto;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +31,7 @@ public class Lista_Produtos extends AppCompatActivity {
     private RecyclerView recyclerView_produtos;
     private AdapterProduto adapterProduto;
     private List<Produto> produtoList;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,20 +50,41 @@ public class Lista_Produtos extends AppCompatActivity {
         recyclerView_produtos.setHasFixedSize(true);
         recyclerView_produtos.setAdapter(adapterProduto);
 
-        Produto produto = new Produto("produto 1", "50 real", R.drawable.ic_launcher_background);
-        produtoList.add(produto);
-        Produto produto1 = new Produto("produto 1", "50 real", R.drawable.ic_launcher_background);
-        produtoList.add(produto1);
-        Produto produto2 = new Produto("produto 1", "50 real", R.drawable.ic_launcher_background);
-        produtoList.add(produto2);
-        Produto produto3 = new Produto("produto 1", "50 real", R.drawable.ic_launcher_background);
-        produtoList.add(produto3);
-        Produto produto4 = new Produto("produto 1", "50 real", R.drawable.ic_launcher_background);
-        produtoList.add(produto4);
-        Produto produto5 = new Produto("produto 1", "50 real", R.drawable.ic_launcher_background);
-        produtoList.add(produto5);
-        Produto produto6 = new Produto("produto 1", "50 real", R.drawable.ic_launcher_background);
-        produtoList.add(produto6);
+        //Evento de Click No Recycler view
+        recyclerView_produtos.addOnItemTouchListener(
+                new RecyclerViewItemClickListener(
+                        getApplicationContext(),
+                        recyclerView_produtos,
+                        new RecyclerViewItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Produto produto = produtoList.get(position);
+                                Toast.makeText(getApplicationContext(), produto.getNome(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                            }
+                        }
+                )
+        );
+
+        db = FirebaseFirestore.getInstance();
+        db.collection("Produtos").orderBy("nome").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                    Produto produto = queryDocumentSnapshot.toObject(Produto.class);
+                    produtoList.add(produto);
+                    adapterProduto.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     @Override

@@ -3,14 +3,8 @@ package com.example.app_delivery.model;
 public class Produto {
     private String nome;
     private String preco;
-    private int foto;
+    private String foto;
     private String descricao;
-
-    public Produto(String nome, String preco, int foto) {
-        this.nome = nome;
-        this.preco = preco;
-        this.foto = foto;
-    }
 
     public String getNome() {
         return nome;
@@ -36,11 +30,11 @@ public class Produto {
         this.descricao = descricao;
     }
 
-    public int getFoto() {
+    public String getFoto() {
         return foto;
     }
 
-    public void setFoto(int foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
 }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.app_delivery.R;
 import com.example.app_delivery.model.Produto;
 
@@ -36,7 +37,7 @@ public class AdapterProduto extends RecyclerView.Adapter<AdapterProduto.ProdutoV
 
     @Override
     public void onBindViewHolder(@NonNull ProdutoViewHolder holder, int position) {
-        holder.foto.setImageResource(produtoList.get(position).getFoto());
+        Glide.with(context).load(produtoList.get(position).getFoto()).into(holder.foto);
         holder.nome.setText(produtoList.get(position).getNome());
         holder.preco.setText(produtoList.get(position).getPreco());
     }
