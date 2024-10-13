@@ -51,7 +51,6 @@ public class AdapterProduto extends RecyclerView.Adapter<AdapterProduto.ProdutoV
         private CircleImageView foto;
         private TextView nome;
         private TextView preco;
-        private TextView descricao;
 
         public ProdutoViewHolder(@NonNull View itemView) {
             super(itemView);

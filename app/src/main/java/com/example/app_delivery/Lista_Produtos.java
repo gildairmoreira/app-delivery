@@ -50,6 +50,17 @@ public class Lista_Produtos extends AppCompatActivity {
         recyclerView_produtos.setHasFixedSize(true);
         recyclerView_produtos.setAdapter(adapterProduto);
 
+        db = FirebaseFirestore.getInstance();
+        db.collection("Produtos").orderBy("nome").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                    Produto produto = queryDocumentSnapshot.toObject(Produto.class);
+                    produtoList.add(produto);
+                    adapterProduto.notifyDataSetChanged();
+                }
+            }
+        });
+
         //Evento de Click No Recycler view
         recyclerView_produtos.addOnItemTouchListener(
                 new RecyclerViewItemClickListener(
@@ -58,8 +69,12 @@ public class Lista_Produtos extends AppCompatActivity {
                         new RecyclerViewItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Produto produto = produtoList.get(position);
-                                Toast.makeText(getApplicationContext(), produto.getNome(), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(Lista_Produtos.this, Detalhes_Produto.class);
+                                intent.putExtra("foto", produtoList.get(position).getFoto());
+                                intent.putExtra("nome", produtoList.get(position).getNome());
+                                intent.putExtra("preco", produtoList.get(position).getPreco());
+
+                                startActivity(intent);
                             }
 
                             @Override
@@ -75,16 +90,7 @@ public class Lista_Produtos extends AppCompatActivity {
                 )
         );
 
-        db = FirebaseFirestore.getInstance();
-        db.collection("Produtos").orderBy("nome").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-                    Produto produto = queryDocumentSnapshot.toObject(Produto.class);
-                    produtoList.add(produto);
-                    adapterProduto.notifyDataSetChanged();
-                }
-            }
-        });
+
     }
 
     @Override
